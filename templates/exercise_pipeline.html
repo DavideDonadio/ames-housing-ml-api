@@ -125,46 +125,48 @@
 <body>
   <main>
     <h1>Exercise Pipeline</h1>
+    <p>This page summarizes the full workflow that was performed. The current <code>main.py</code> keeps the production training and API logic, while some exploratory analysis and visual diagnostics were performed earlier and are not all shown in this runtime file.</p>
     <div class="sections">
 
       <section>
         <h2>1. Dataset Inspection</h2>
-        <p>The training set contains <strong>1,460 rows and 81 columns</strong>, loaded from <code>train.csv</code> alongside <code>test.csv</code>. The inspection phase covers:</p>
+        <p>The training set contains <strong>1,460 rows and 81 columns</strong>, loaded from <code>train.csv</code> alongside <code>test.csv</code>. During the experiment, the inspection phase covered:</p>
         <ul>
           <li>Column non-null counts and dtype breakdown via <code>.info()</code></li>
-          <li>Descriptive statistics (count, mean, std, min/max, percentiles) via <code>.describe()</code></li>
-          <li>Target variable distribution — a histogram of <code>SalePrice</code> confirms right skew</li>
-          <li>Pearson correlation between <code>SalePrice</code> and all numeric columns; the top 10 correlated features are extracted and visualised in a heatmap</li>
+          <li>Descriptive statistics (count, mean, std, ecc...) via <code>.describe()</code></li>
+          <li>Target variable distribution, a histogram of <code>SalePrice</code> shows right skew</li>
+          <li>Pearson correlation between <code>SalePrice</code> and all numeric columns; the top 10 correlated features were extracted and visualised in a heatmap</li>
         </ul>
-        <p>Top correlated features include <code>OverallQual</code>, <code>GrLivArea</code>, <code>GarageCars</code>, <code>GarageArea</code>, and <code>TotalBsmtSF</code>.</p>
+        <p>Top correlated features included <code>OverallQual</code>, <code>GrLivArea</code>, <code>GarageCars</code>, <code>GarageArea</code>, and <code>TotalBsmtSF</code>. These EDA artifacts are summarized here even if not all plots are currently rendered in the running API code.</p>
       </section>
 
       <section>
         <h2>2. Outlier &amp; Missing-Value Handling</h2>
-        <p>Two clear outliers are identified from a <code>GrLivArea vs SalePrice</code> scatter plot — properties larger than 4,300 sq ft but priced below $200,000 — and are removed from the training set.</p>
-        <p>Missing values are handled as follows:</p>
+        <p>Two clear outliers were identified from a <code>GrLivArea vs SalePrice</code> scatter plot, properties larger than 4,300 sq ft but priced below $200,000, and were removed from the training set.</p>
+        <p>Missing values were handled as follows:</p>
         <ul>
           <li>Columns with NaN counts and percentages are printed and ranked</li>
-          <li><strong>Categorical NaNs</strong> are filled with <code>"None"</code> (e.g. <code>PoolQC</code> NaN means no pool)</li>
+          <li><strong>Categorical NaNs</strong> are filled with <code>"None"</code> (e.g. <code>PoolQC</code> NaN → no pool)</li>
           <li><strong>Numerical NaNs</strong>: <code>GarageYrBlt</code> is set to <code>0</code>; all other numeric columns are filled with their column mean</li>
         </ul>
-        <p>Finally, all remaining categorical columns are one-hot encoded with <code>pd.get_dummies(drop_first=True)</code>, converting the dataset to an entirely numeric representation.</p>
+        <p>Finally, all remaining categorical columns were one-hot encoded with <code>pd.get_dummies(drop_first=True)</code>, converting the dataset to an entirely numeric representation.</p>
       </section>
 
       <section>
         <h2>3. Feature Engineering &amp; Normalisation</h2>
-        <p>The target <code>SalePrice</code> is separated from the feature matrix. Three highly collinear area columns are merged into a single composite feature:</p>
+        <p>The target <code>SalePrice</code> was separated from the feature matrix. Three highly collinear area columns were merged into a single composite feature:</p>
         <pre><code>TotalSF = TotalBsmtSF + 1stFlrSF + 2ndFlrSF</code></pre>
-        <p>The original three columns are then dropped, reducing redundancy.</p>
-        <p>All numeric features are standardised with <code>StandardScaler</code> (zero mean, unit variance). The target is log-transformed with <code>np.log1p(SalePrice)</code> to reduce skew and stabilise variance, making it suitable for linear modelling.</p>
+        <p>The original three columns were then dropped, reducing redundancy.</p>
+        <p>All numeric features were standardised with <code>StandardScaler</code> (zero mean, unit variance). The target was log-transformed with <code>np.log1p(SalePrice)</code> to reduce skew and stabilise variance, making it suitable for linear modelling.</p>
       </section>
 
       <section>
         <h2>4. Model Selection, Training &amp; Persistence</h2>
-        <p>A <strong>Ridge Regression</strong> model (<code>alpha=10.0</code>) is selected for its robustness against multicollinearity in high-dimensional one-hot encoded data.</p>
-        <p>Model performance is evaluated using <strong>5-fold cross-validation</strong> with <code>neg_mean_squared_error</code> scoring. RMSE is computed per fold and averaged:</p>
+        <p>A <strong>Ridge Regression</strong> model (<code>alpha=10.0</code>) was selected for its robustness against multicollinearity in high-dimensional one-hot encoded data.</p>
+        <p>Model performance was evaluated using <strong>5-fold cross-validation</strong> with <code>neg_mean_squared_error</code> scoring. 
+          <p>RMSE was computed per fold and averaged: <b>0.1157</b></p>
         <pre><code>rmse_scores = np.sqrt(-cross_val_score(model, x_train, y_train, cv=5, scoring='neg_mean_squared_error'))</code></pre>
-        <p>The final model is then trained on the full clean training set and persisted to disk with <code>joblib</code>:</p>
+        <p>The final model was then trained on the full clean training set and persisted to disk with <code>joblib</code>:</p>
         <ul>
           <li><code>ridge_model.pkl</code> — trained Ridge model</li>
           <li><code>scaler.pkl</code> — fitted StandardScaler</li>

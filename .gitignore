@@ -10,3 +10,6 @@ __pycache__/
 # Data Files (Best practice is to NOT put raw data in Git)
 *.csv
 house-prices-advanced-regression-techniques/
+
+# Copilot agent customizations
+.github/agents/
