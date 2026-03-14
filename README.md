@@ -7,7 +7,7 @@ This project transforms the classic Ames Housing dataset into a deployable REST 
 
 ### Key Features
 * **Model:** Ridge Regression (Linear model with L2 Regularization).
-* **Performance:** Achieved an Average RMSE of **0.1156** (RMSLE) via 5-fold Cross-Validation.
+* **Performance:** Achieved an Average RMSE of **0.1157** (RMSLE) via 5-fold Cross-Validation.
 * **Pipeline:** Automated data cleaning, outlier removal, feature engineering (TotalSF), and input scaling.
 * **Deployment:** Flask API served within a Docker container using `uv` for modern, reproducible dependency management.
 
