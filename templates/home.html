@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Estate Price API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #4b5563;
+      --accent: #1e40af;
+      --border: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: "Source Sans 3", "Segoe UI", sans-serif;
+      color: var(--text);
+      background: linear-gradient(160deg, #eef3fb 0%, #f8fafc 100%);
+    }
+
+    main {
+      width: min(1035px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+      padding: 36px 30px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(1.7rem, 2.4vw, 2.2rem);
+      line-height: 1.25;
+      color: #0f172a;
+    }
+
+    p {
+      margin: 10px 0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+      background: #eff6ff;
+      color: var(--accent);
+      border: 1px solid #dbeafe;
+      border-radius: 6px;
+      padding: 0.15rem 0.4rem;
+      white-space: nowrap;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      font-size: 0.97rem;
+    }
+
+    th {
+      background: #eff6ff;
+      color: var(--accent);
+      font-weight: 600;
+      text-align: center;
+      padding: 9px 12px;
+      border-bottom: 2px solid #dbeafe;
+    }
+
+    td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .hint {
+      background: #f8faff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-top: 12px;
+      text-align: left;
+    }
+
+    .hint p {
+      margin: 6px 0;
+    }
+
+    pre {
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 10px 0 0;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      border: none;
+      padding: 0;
+      white-space: inherit;
+    }
+
+    a.route-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      border-radius: 6px;
+      padding: 0.15rem 0.4rem;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    a.route-link:hover {
+      background: #dbeafe;
+      border-color: #93c5fd;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>API for Predicting prices in real estate</h1>
+    <p>The following endpoints are available on this server (<code>http://0.0.0.0:5041</code>).</p>
+
+    <table>
+      <thead>
+        <tr><th>Method</th><th>Route</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>GET</td><td><code>/</code></td><td>This home page</td></tr>
+        <tr><td>POST</td><td><code>/predict</code></td><td>Predict a house sale price from JSON input</td></tr>
+        <tr><td>GET</td><td><a class="route-link" href="/pipeline">/pipeline</a></td><td>Overview of the data science pipeline</td></tr>
+      </tbody>
+    </table>
+
+    <div class="hint">
+      <p><strong>Curl predict example:</strong></p>
+      <pre><code>curl -X POST http://localhost:5041/predict \
+  -H "Content-Type: application/json" \
+  -d '{"OverallQual":8,"GrLivArea":2000,"GarageCars":2,"TotalBsmtSF":1000,"1stFlrSF":1000,"2ndFlrSF":800}'</code></pre>
+    </div>
+  </main>
+</body>
+</html>

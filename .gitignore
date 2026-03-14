@@ -1,0 +1,12 @@
+# Python & Environment
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# macOS system files
+.DS_Store
+
+# Data Files (Best practice is to NOT put raw data in Git)
+*.csv
+house-prices-advanced-regression-techniques/
