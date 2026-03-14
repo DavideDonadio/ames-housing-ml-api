@@ -17,6 +17,11 @@ This project transforms the classic Ames Housing dataset into a deployable REST 
 * **API Framework:** Flask
 * **Environment/DevOps:** Docker, uv, Joblib
 
+## Data & Engineering Insights
+- **Target Transformation:** To handle the right-skewed nature of house prices, a log1p transformation was applied, ensuring a more normal distribution for the linear model.
+- **Feature Engineering:** Combined basement and floor square footage into a single TotalSF feature to reduce multicollinearity and improve model stability.
+- **Preprocessing:** Implemented a robust pipeline involving median imputation for missing values and StandardScaling for numerical features.
+
 ## How to Run
 
 ### 1. Build the Image
@@ -38,8 +43,3 @@ curl -X POST http://localhost:5041/predict \
   -H "Content-Type: application/json" \
   -d '{"OverallQual":8,"GrLivArea":2000,"GarageCars":2,"TotalBsmtSF":1000,"1stFlrSF":1000,"2ndFlrSF":800}'
 ```
-
-## Data & Engineering Insights
-- **Target Transformation:** To handle the right-skewed nature of house prices, a log1p transformation was applied, ensuring a more normal distribution for the linear model.
-- **Feature Engineering:** Combined basement and floor square footage into a single TotalSF feature to reduce multicollinearity and improve model stability.
-- **Preprocessing:** Implemented a robust pipeline involving median imputation for missing values and StandardScaling for numerical features.
